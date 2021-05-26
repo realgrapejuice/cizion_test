@@ -60,23 +60,23 @@ comments.forEach((comment) => {
   visualizeComment(comment);
 });
 
-// 나도 한마디!
-const prepareComment = document.createElement("aside");
-const visualizePrepareComment = () => {
-  const title = document.createElement("h3");
-  const input = document.createElement("input");
-  const submit = document.createElement("button");
+const beforeLogin = document.createElement("div");
+const visualizeBeforeLogin = () => {
+  const button = document.createElement("button");
+  button.setAttribute("class", "moveToLogin");
+  button.innerText = "로그인하고 댓글 작성하기";
+  beforeLogin.append(button);
+};
 
-  input.setAttribute("placeholder", "댓글을 입력해 주세요.");
-  title.innerText = "나도 한마디!";
-  submit.innerText = "등록";
-  prepareComment.append(title, input, submit);
+const visualizeAuth = (e) => {
+  console.log("클릭됨");
 };
 
 if (!user) {
-  visualizePrepareComment();
-  prepareComment.addEventListener("click", () => console.log("hello"));
+  visualizeBeforeLogin();
+  const button = beforeLogin.querySelector(".moveToLogin");
+  button.addEventListener("click", visualizeAuth);
 }
 
 // append 영역
-app.append(commentSection, prepareComment);
+app.append(commentSection, beforeLogin);
