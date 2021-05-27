@@ -1,6 +1,6 @@
 "use strict";
 
-const comments = [
+export const comments = [
   {
     id: "jonathan Ive",
     auth: "facebook",
@@ -28,5 +28,3 @@ const comments = [
     },
   },
 ];
-
-export default comments;

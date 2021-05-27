@@ -1,6 +1,6 @@
 "use strict";
 
-import comments from "./db.js";
+import { comments } from "./db.js";
 
 export default class Comment {
   constructor() {
@@ -43,6 +43,13 @@ export default class Comment {
   }
 
   loadComment() {
-    this.db.forEach((comment) => this._visualize(comment));
+    const db = localStorage.getItem("db");
+    if (db) {
+      const parsedDb = JSON.parse(db);
+      parsedDb.forEach((comment) => this._visualize(comment));
+    } else {
+      localStorage.setItem("db", JSON.stringify(this.db));
+      this.db.forEach((comment) => this._visualize(comment));
+    }
   }
 }
