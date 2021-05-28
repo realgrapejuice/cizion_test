@@ -11,6 +11,9 @@ export default class MakeComment {
     this.commentSection.setAttribute("class", "comment__container");
     this.beforeLoginBtn = document.createElement("button");
     this.beforeLoginBtn.setAttribute("class", "moveToLogin");
+    this.logOutBtn = document.createElement("button");
+    this.logOutBtn.setAttribute("type", "button");
+    this.logOutBtn.innerText = "로그 아웃";
     this.user = localStorage.getItem("user");
   }
 
@@ -60,34 +63,35 @@ export default class MakeComment {
   _afterLogin() {
     const user = this._loadUser();
     const div = document.createElement("div");
-    div.setAttribute("class", "comment__container-block");
     const form = document.createElement("form");
+    const strong = document.createElement("strong");
+    const auth = document.createElement("span");
+    const textarea = document.createElement("textarea");
+    const submitBtn = document.createElement("button");
+
+    div.setAttribute("class", "comment__container-block");
     form.setAttribute("action", "#");
     form.setAttribute("method", "GET");
     form.setAttribute("class", "comment__container-form");
-    const strong = document.createElement("strong");
     strong.setAttribute("class", "userId");
-    const auth = document.createElement("span");
     auth.setAttribute("class", "userAuth");
-    const input = document.createElement("input");
-    input.setAttribute(
+    textarea.setAttribute(
       "placeholder",
       "댓글 작성 시 상대에 대한 배려와 책임을 담아주세요"
     );
-    const submitBtn = document.createElement("button");
     submitBtn.setAttribute("type", "submit");
 
     strong.innerText = user.id;
     auth.innerText = user.auth;
     submitBtn.innerText = "댓글 등록";
 
-    form.append(input, submitBtn);
+    form.append(textarea, submitBtn);
     div.append(auth, strong, form);
-    this.app.append(div);
+    this.app.append(div, this.logOutBtn);
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      this._handleSubmit(input, user.id, user.auth, user.img);
+      this._handleSubmit(textarea, user.id, user.auth, user.img);
     });
   }
 
@@ -158,12 +162,20 @@ export default class MakeComment {
     input.value = "";
   }
 
+  _handleLogOut() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("auth");
+    localStorage.removeItem("img");
+    window.location.reload(true);
+  }
+
   loadMakeComment() {
     if (!this.user) {
       this._beforeLogin();
       this.beforeLoginBtn.addEventListener("click", this._fadeUpLogin);
     } else {
       this._afterLogin();
+      this.logOutBtn.addEventListener("click", this._handleLogOut);
     }
   }
 }
